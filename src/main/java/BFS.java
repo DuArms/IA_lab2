@@ -9,8 +9,8 @@ public class BFS {
     BFS(MazeState mazeState, Node curentPoint) {
         queue.add(curentPoint);
         do {
-            System.out.println(curentPoint + "   " + mazeState.finish);
             curentPoint = queue.peek();
+            System.out.println(curentPoint + "   " + mazeState.finish);
             queue.remove();
             if (curentPoint.equals(mazeState.finish)) {
                 MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
@@ -19,9 +19,17 @@ public class BFS {
             }
 
             List<Node> neighbors = mazeState.findNeighbors(curentPoint);
-            MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
-            queue.addAll(neighbors);
-
+            if (neighbors.contains(mazeState.finish)) {
+                queue.clear();
+                queue.add(mazeState.finish);
+                MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
+            } else {
+                MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
+                for( var vecin : neighbors){
+                    if ( !queue.contains(vecin))
+                        queue.add(vecin);
+                }
+            }
         } while (!queue.isEmpty());
     }
 
