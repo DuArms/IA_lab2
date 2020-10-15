@@ -1,41 +1,55 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class MazeState {
+    public static final int spatiu = -1;
+    //    public static final int start = 0;
     public static final int perete = 1;
-    public static final int spatiu = 0;
+    public static final int curent = 2;
     public static final int vizitat = 3;
+    public static final int drum = 4;
+    public static final int pStart = 5;
+    public static final int pFinal = 6;
+
+
+    public static Node start;
+    public static Node finish;
+
+    public static Node curentLocation;
+
+    public static int dimension[] = new int[2];
 
     public static int[][] maze;
 
-    public Node start;
-    public Node finish;
-    public int dimension;
-
     public void setStart(Node start) {
-        this.start = start;
+        MazeState.start = start;
+        MazeState.curentLocation = start;
     }
 
     public void setFinish(Node finish) {
-        this.finish = finish;
+        MazeState.finish = finish;
     }
 
     MazeState() {
+
+    }
+
+    MazeState(int[][] a) {
+        maze = a;
+    }
+
+    public void initFromFile() {
         List<int[]> lab = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader("maze.txt"));
-
             String st;
             while ((st = reader.readLine()) != null) {
                 int[] linie = new int[st.length()];
                 for (int i = 0; i < st.length(); i++) {
-
                     switch (st.charAt(i)) {
                         case MazeGenerator.perete:
                             linie[i] = MazeState.perete;
@@ -44,13 +58,14 @@ public class MazeState {
                             linie[i] = MazeState.spatiu;
                             break;
                         case MazeGenerator.start:
+                            linie[i] = MazeState.spatiu ;
                             this.setStart(new Node(lab.size(), i));
                             break;
                         case MazeGenerator.finish:
+                            linie[i] = MazeState.spatiu ;
                             this.setFinish(new Node(lab.size(), i));
                             break;
                         default:
-
                     }
                 }
                 lab.add(linie);
@@ -60,45 +75,15 @@ public class MazeState {
             e.printStackTrace();
         }
 
-        maze = new int[lab.size()][lab.size()];
+        maze = new int[lab.size()][lab.get(0).length];
 
         for (int i = 0; i < lab.size(); i++)
             maze[i] = lab.get(i);
 
-        this.dimension = maze.length;
-    }
+        dimension[0] = maze.length;
+        dimension[1] = maze[0].length;
 
-    public String getRawMaze() {
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        for (int[] row : maze) {
-            sb.append(i + " : " + Arrays.toString(row) + ",\n");
-            i++;
-        }
-        return sb.toString();
-    }
-
-    public String getSymbolicMaze() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                switch (maze[i][j]) {
-                    case MazeState.vizitat:
-                        sb.append(MazeGenerator.vizitat);
-                        break;
-                    case MazeState.perete:
-                        sb.append(MazeGenerator.perete);
-                        break;
-                    case MazeState.spatiu:
-                        sb.append(MazeGenerator.spatiu);
-                        break;
-                    default:
-                }
-            }
-            sb.append("\n");
-        }
-        WrtiteFile.write("./out.txt", sb.toString());
-        return sb.toString();
+        curentLocation = start;
     }
 
     public ArrayList<Node> findNeighbors(Node node) {
@@ -114,13 +99,26 @@ public class MazeState {
         return neighbors;
     }
 
+    public MazeState tranzition(Node goTo) {
+        if (validateTransition(goTo)) {
+            maze[curentLocation.x][curentLocation.y] = MazeState.vizitat;
+            maze[goTo.x][goTo.y] = MazeState.curent;
+            MazeState.curentLocation = goTo;
+            return this;
+        }
+        return null;
+    }
+
+    public Boolean validateTransition(Node goTo) {
+        return freeSpace(goTo.x, goTo.y);
+    }
 
     public Boolean pointOnGrid(int x, int y) {
-        return x >= 0 && y >= 0 && x < dimension && y < dimension;
+        return x >= 0 && y >= 0 && x < dimension[0] && y < dimension[1];
     }
 
     public Boolean freeSpace(int x, int y) {
-        return pointOnGrid(x, y) && maze[x][y] == 0;
+        return pointOnGrid(x, y) && maze[x][y] == MazeState.spatiu;
     }
 
 

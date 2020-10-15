@@ -1,28 +1,45 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 public class Backtracking {
 
+    public static Stack<Node> path = new Stack<>();
+    public  static  Boolean stop = false;
 
-    Backtracking(MazeState mazeState, Node curentPoint) {
-        System.out.println(curentPoint + "   " + mazeState.finish);
+    Backtracking(MazeState mazeState) {
+        if (MazeState.curentLocation.equals(MazeState.finish)) {
+            Backtracking.stop = true;
 
-        if (curentPoint.equals(mazeState.finish)) {
-            MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
-            mazeState.getSymbolicMaze();
-            System.exit(1);
+            for ( var a : path){
+                MazeState.maze[a.x][a.y] = MazeState.drum ;
+            }
+
+            MazeState.maze[MazeState.start.x][MazeState.start.y] = MazeState.pStart;
+            MazeState.maze[MazeState.finish.x][MazeState.finish.y] = MazeState.pFinal;
+            PrintMaze.getSymbolicMaze(MazeState.maze, MazeState.dimension);
         }
 
-        List<Node> neighbors = mazeState.findNeighbors(curentPoint);
-        MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
+        List<Node> neighbors = mazeState.findNeighbors(MazeState.curentLocation);
 
-        if(neighbors.contains(mazeState.finish)){
-            new Backtracking(mazeState, mazeState.finish);
+        if (neighbors.contains(MazeState.finish)) {
+            mazeState.tranzition(MazeState.finish);
+            path.add(MazeState.finish);
+            new Backtracking(mazeState);
         }
-
+        Node fixPoint = MazeState.curentLocation;
         for (var vecin : neighbors) {
-            new Backtracking(mazeState, vecin);
+            MazeState.curentLocation = fixPoint;
+            if (mazeState.tranzition(vecin) != null) {
+                path.add(vecin);
+                new Backtracking(mazeState);
+                if(stop){
+                    break ;
+                }
+                path.pop();
+            }
         }
-
     }
 
 

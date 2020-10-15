@@ -15,6 +15,7 @@ class MazeGenerator {
     public static final char start = 'S';
     public static final char finish = 'F';
     public static final char vizitat = '*';
+    public static final char drum = '@';
 
     MazeGenerator(int dim) {
         maze = new int[dim][dim];
@@ -45,18 +46,7 @@ class MazeGenerator {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
-                switch (maze[i][j]) {
-                    case MazeState.vizitat:
-                        sb.append(MazeGenerator.vizitat);
-                        break;
-                    case MazeState.perete:
-                        sb.append(MazeGenerator.perete);
-                        break;
-                    case MazeState.spatiu:
-                        sb.append(MazeGenerator.spatiu);
-                        break;
-                    default:
-                }
+                PrintMaze.functie(sb, i, j, maze);
             }
             sb.append("\n");
         }

@@ -26,7 +26,11 @@ public class Main {
 //        mazeGenerator.getSymbolicMaze();
 
         MazeState mazeState = new MazeState();
-//        new Backtracking(mazeState, mazeState.start);
-        new BFS(mazeState, mazeState.start);
+        mazeState.initFromFile();
+        new Backtracking(mazeState);
+   //     new BFS(mazeState, mazeState.start);
+
+
+        System.out.println(Backtracking.path);
     }
 }

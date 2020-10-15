@@ -13,8 +13,8 @@ public class BFS {
             System.out.println(curentPoint + "   " + mazeState.finish);
             queue.remove();
             if (curentPoint.equals(mazeState.finish)) {
-                MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
-                mazeState.getSymbolicMaze();
+//                MazeState.maze[curentPoint.x][curentPoint.y] = MazeState.vizitat;
+//                mazeState.getSymbolicMaze();
                 System.exit(1);
             }
 
