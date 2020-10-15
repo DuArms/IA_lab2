@@ -102,7 +102,6 @@ public class MazeState {
     public MazeState tranzition(Node goTo) {
         if (validateTransition(goTo)) {
             maze[curentLocation.x][curentLocation.y] = MazeState.vizitat;
-            maze[goTo.x][goTo.y] = MazeState.curent;
             MazeState.curentLocation = goTo;
             return this;
         }

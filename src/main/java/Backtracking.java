@@ -34,10 +34,13 @@ public class Backtracking {
             if (mazeState.tranzition(vecin) != null) {
                 path.add(vecin);
                 new Backtracking(mazeState);
+
                 if(stop){
+
                     break ;
                 }
                 path.pop();
+
             }
         }
     }

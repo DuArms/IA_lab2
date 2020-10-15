@@ -45,6 +45,7 @@ public class PrintMaze {
                 sb.append(MazeGenerator.finish);
                 break;
             default:
+                System.out.println(maze[i][j]);
         }
     }
 
