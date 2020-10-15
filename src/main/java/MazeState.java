@@ -108,15 +108,15 @@ public class MazeState {
         return null;
     }
 
-    public Boolean validateTransition(Node goTo) {
+    public static Boolean validateTransition(Node goTo) {
         return freeSpace(goTo.x, goTo.y);
     }
 
-    public Boolean pointOnGrid(int x, int y) {
+    public static Boolean pointOnGrid(int x, int y) {
         return x >= 0 && y >= 0 && x < dimension[0] && y < dimension[1];
     }
 
-    public Boolean freeSpace(int x, int y) {
+    public static Boolean freeSpace(int x, int y) {
         return pointOnGrid(x, y) && maze[x][y] == MazeState.spatiu;
     }
 

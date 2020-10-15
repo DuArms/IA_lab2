@@ -27,10 +27,12 @@ public class Main {
 
         MazeState mazeState = new MazeState();
         mazeState.initFromFile();
-        new Backtracking(mazeState);
-   //     new BFS(mazeState, mazeState.start);
+//        new Backtracking(mazeState);
+//        System.out.println(Backtracking.path);
 
 
-        System.out.println(Backtracking.path);
+        new BFS(mazeState);
+
+
     }
 }
