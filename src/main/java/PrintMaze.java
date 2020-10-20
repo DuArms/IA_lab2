@@ -25,6 +25,9 @@ public class PrintMaze {
     }
 
     static void functie(StringBuilder sb, int i, int j, int[][] maze) {
+//        System.out.println(i +" "+j + " " + MazeState.dimension[0] + " "+ MazeState.dimension[1]);
+//        System.out.println(maze[i].length);
+
         switch (maze[i][j]) {
             case MazeState.vizitat:
                 sb.append(MazeGenerator.vizitat);
